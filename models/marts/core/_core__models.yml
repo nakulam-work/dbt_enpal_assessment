@@ -1,0 +1,66 @@
+version: 2
+
+models:
+  - name: dim_stages
+    columns:
+      - name: stage_id
+        data_tests: [not_null, unique]
+      - name: stage_name
+        data_tests: [not_null]
+
+  - name: dim_users
+    columns:
+      - name: user_id
+        data_tests: [not_null, unique]
+
+  - name: dim_activity_types
+    columns:
+      - name: activity_type_id
+        data_tests: [not_null, unique]
+      - name: activity_type_key
+        data_tests: [not_null, unique]
+      - name: is_sales_call
+        data_tests: [not_null]
+
+  - name: dim_lost_reasons
+    columns:
+      - name: lost_reason_id
+        data_tests: [not_null, unique]
+
+  - name: dim_deals
+    columns:
+      - name: deal_id
+        data_tests: [not_null, unique]
+      - name: created_at
+        data_tests: [not_null]
+      - name: current_stage_id
+        data_tests:
+          - relationships:
+              to: ref('dim_stages')
+              field: stage_id
+
+  - name: fct_deal_stage_changes
+    columns:
+      - name: deal_id
+        data_tests: [not_null]
+      - name: stage_id
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stages')
+              field: stage_id
+      - name: is_first_entry
+        data_tests: [not_null]
+
+  - name: fct_deal_activities
+    columns:
+      - name: activity_sk
+        data_tests: [not_null, unique]
+      - name: deal_id
+        data_tests: [not_null]
+      - name: activity_type_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_activity_types')
+              field: activity_type_key

@@ -1,0 +1,40 @@
+version: 2
+
+sources:
+  - name: pipedrive
+    database: postgres
+    schema: public
+    description: Raw Pipedrive CRM tables, loaded from CSV into Postgres.
+    tables:
+      - name: deal_changes
+        description: Append-only log of deal field changes (add_time, stage_id, user_id, lost_reason).
+        columns:
+          - name: deal_id
+            data_tests: [not_null]
+          - name: changed_field_key
+            data_tests:
+              - not_null
+              - accepted_values:
+                  values: ['add_time', 'stage_id', 'user_id', 'lost_reason']
+      - name: activity
+        columns:
+          - name: activity_id
+            data_tests: [not_null]
+      - name: activity_types
+        columns:
+          - name: id
+            data_tests: [not_null, unique]
+          - name: type
+            data_tests: [not_null, unique]
+      - name: stages
+        columns:
+          - name: stage_id
+            data_tests: [not_null, unique]
+      - name: users
+        columns:
+          - name: id
+            data_tests: [not_null, unique]
+      - name: fields
+        columns:
+          - name: id
+            data_tests: [not_null, unique]

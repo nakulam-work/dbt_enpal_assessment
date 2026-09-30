@@ -1,0 +1,21 @@
+version: 2
+
+seeds:
+  - name: seed_funnel_steps
+    description: >
+      Funnel definition: maps each report step to its KPI name, display order,
+      and the source it is measured from (a stage_id or an activity type key).
+    columns:
+      - name: funnel_step
+        data_tests: [not_null, unique]
+      - name: kpi_name
+        data_tests: [not_null]
+      - name: sort_order
+        data_tests: [not_null, unique]
+      - name: source_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['stage', 'activity']
+      - name: source_key
+        data_tests: [not_null]
