@@ -1,0 +1,17 @@
+version: 2
+
+models:
+  - name: rep_sales_funnel_monthly
+    description: >
+      Monthly sales funnel. One row per (month, funnel step) with the count of
+      distinct deals that entered the step. Stage steps use first entry; sales-call
+      sub-steps use completed calls.
+    columns:
+      - name: month
+        data_tests: [not_null]
+      - name: kpi_name
+        data_tests: [not_null]
+      - name: funnel_step
+        data_tests: [not_null]
+      - name: deals_count
+        data_tests: [not_null]
